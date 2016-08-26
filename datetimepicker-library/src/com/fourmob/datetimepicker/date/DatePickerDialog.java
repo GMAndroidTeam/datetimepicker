@@ -453,9 +453,9 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 		}
 	}
 
-//	public void setOnDateSetListener(OnDateSetListener onDateSetListener) {
-//		mDateSetCallBack = onDateSetListener;
-//	}
+	public void setOnDateSetListener(OnDateSetListener onDateSetListener) {
+		mDateSetCallBack = onDateSetListener;
+	}
 
 	public void setYearRange(int minYear, int maxYear) {
 		if (maxYear < minYear)
