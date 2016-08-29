@@ -5,7 +5,9 @@ repositories {
 }
 
 dependencies {
-	compile project(':datetimepicker-library')
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile project(':datetimepicker-library')
+    compile 'com.android.support:support-v4:24.2.0'
 }
 
 android {
@@ -13,7 +15,7 @@ android {
     buildToolsVersion "19.1.0"
 
     defaultConfig {
-        minSdkVersion 7
+        minSdkVersion 9
         targetSdkVersion 19
     }
 	
