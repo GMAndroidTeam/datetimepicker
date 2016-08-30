@@ -36,6 +36,7 @@ public class MainActivity extends FragmentActivity implements OnDateSetListener,
             public void onClick(View v) {
                 datePickerDialog.setVibrate(isVibrate());
                 datePickerDialog.setYearRange(1985, 2028);
+                datePickerDialog.setTitle("您是哪天做的");
                 datePickerDialog.setCloseOnSingleTapDay(isCloseOnSingleTapDay());
                 datePickerDialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
             }
