@@ -2,6 +2,7 @@ package com.fourmob.datetimepicker.sample;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CheckBox;
@@ -15,7 +16,7 @@ import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import java.util.Calendar;
 
-public class MainActivity extends FragmentActivity implements OnDateSetListener, OnCancleListener, TimePickerDialog.OnTimeSetListener {
+public class MainActivity extends AppCompatActivity implements OnDateSetListener, OnCancleListener, TimePickerDialog.OnTimeSetListener {
 
     public static final String DATEPICKER_TAG = "datepicker";
     public static final String TIMEPICKER_TAG = "timepicker";

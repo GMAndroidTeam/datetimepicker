@@ -8,10 +8,12 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.TimeZone;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
@@ -188,17 +190,11 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 				mAnimator.setContentDescription(mYearPickerDescription + ": " + dayDesc);
 				Utils.tryAccessibilityAnnounce(mAnimator, mSelectYear);
 				break;
+				default:break;
 		}
 	}
 
 	private void updateDisplay(boolean announce) {
-        /*if (mDayOfWeekView != null) {
-            mDayOfWeekView.setText(mCalendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG,
-                    Locale.getDefault()).toUpperCase(Locale.getDefault()));
-        }
-
-        mSelectedMonthTextView.setText(mCalendar.getDisplayName(Calendar.MONTH, Calendar.SHORT,
-                Locale.getDefault()).toUpperCase(Locale.getDefault()));*/
 
 		if (this.mDayOfWeekView != null){
 			this.mCalendar.setFirstDayOfWeek(mWeekStart);
@@ -231,18 +227,22 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 		}
 	}
 
+	@Override
 	public int getFirstDayOfWeek() {
 		return mWeekStart;
 	}
 
+	@Override
 	public int getMaxYear() {
 		return mMaxYear;
 	}
 
+	@Override
 	public int getMinYear() {
 		return mMinYear;
 	}
 
+	@Override
 	public SimpleMonthAdapter.CalendarDay getSelectedDay() {
 		return new SimpleMonthAdapter.CalendarDay(mCalendar);
 	}
@@ -255,10 +255,12 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 						   String doneText, String cancleText,
 						   int year, int month, int day,
 						   boolean vibrate) {
-		if (year > MAX_YEAR)
+		if (year > MAX_YEAR) {
 			throw new IllegalArgumentException("year end must < " + MAX_YEAR);
-		if (year < MIN_YEAR)
+		}
+		if (year < MIN_YEAR) {
 			throw new IllegalArgumentException("year end must > " + MIN_YEAR);
+		}
 		mDateSetCallBack = onDateSetListener;
 		mOnCancleCallBack = onCancleListener;
 		mDoneText = doneText;
@@ -269,14 +271,24 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 		mVibrate = vibrate;
 	}
 
+	@Override
 	public void onClick(View view) {
 		tryVibrate();
-		if (view.getId() == R.id.date_picker_year)
+		if (view.getId() == R.id.date_picker_year) {
 			setCurrentView(YEAR_VIEW);
-		else if (view.getId() == R.id.date_picker_month_and_day)
+		}
+		else if (view.getId() == R.id.date_picker_month_and_day) {
 			setCurrentView(MONTH_AND_DAY_VIEW);
+		}
 	}
 
+	@NonNull
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		return new Dialog(getActivity(), R.style.dialog_date_pick);
+	}
+
+	@Override
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		Activity activity = getActivity();
@@ -290,8 +302,8 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 		}
 	}
 
+	@Override
 	public View onCreateView(LayoutInflater layoutInflater, ViewGroup parent, Bundle bundle) {
-		getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
 		View view = layoutInflater.inflate(R.layout.date_picker_dialog, null);
 
@@ -396,6 +408,7 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 		dismiss();
 	}
 
+	@Override
 	public void onDayOfMonthSelected(int year, int month, int day) {
 
 		mCalendar.set(Calendar.YEAR, year);
@@ -409,6 +422,7 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 		}
 	}
 
+	@Override
 	public void onSaveInstanceState(Bundle bundle) {
 		super.onSaveInstanceState(bundle);
 		bundle.putInt(KEY_SELECTED_YEAR, mCalendar.get(Calendar.YEAR));
@@ -430,6 +444,7 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 		bundle.putBoolean(KEY_VIBRATE, mVibrate);
 	}
 
+	@Override
 	public void onYearSelected(int year) {
 		adjustDayInMonthIfNeeded(mCalendar.get(Calendar.MONTH), year);
 		mCalendar.set(Calendar.YEAR, year);
@@ -438,6 +453,7 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 		updateDisplay(true);
 	}
 
+	@Override
 	public void registerOnDateChangedListener(OnDateChangedListener onDateChangedListener) {
 		mListeners.add(onDateChangedListener);
 	}
@@ -458,18 +474,23 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 	}
 
 	public void setYearRange(int minYear, int maxYear) {
-		if (maxYear < minYear)
+		if (maxYear < minYear) {
 			throw new IllegalArgumentException("Year end must be larger than year start");
-		if (maxYear > MAX_YEAR)
+		}
+		if (maxYear > MAX_YEAR) {
 			throw new IllegalArgumentException("max year end must < " + MAX_YEAR);
-		if (minYear < MIN_YEAR)
+		}
+		if (minYear < MIN_YEAR) {
 			throw new IllegalArgumentException("min year end must > " + MIN_YEAR);
+		}
 		mMinYear = minYear;
 		mMaxYear = maxYear;
-		if (mDayPickerView != null)
+		if (mDayPickerView != null) {
 			mDayPickerView.onChange();
+		}
 	}
 
+	@Override
 	public void tryVibrate() {
 		if (mVibrator != null && mVibrate) {
 			long timeInMillis = SystemClock.uptimeMillis();
@@ -492,20 +513,20 @@ public class DatePickerDialog extends DialogFragment implements View.OnClickList
 		mTitleText = title;
 	}
 
-	static abstract interface OnDateChangedListener {
-		public abstract void onDateChanged();
+	interface OnDateChangedListener {
+		void onDateChanged();
 	}
 
-	public static abstract interface OnDateSetListener {
-		//添加参数weekDay by Michael at 4.0
-		public abstract void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day,int dayOfWeek,long timeInMillis);
+	public interface OnDateSetListener {
+		// 添加参数weekDay by Michael at 4.0
+		void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day,int dayOfWeek,long timeInMillis);
 	}
 	/**
 	 * add since 4.0
 	 * @author michaelliu
 	 *
 	 */
-	public static abstract interface OnCancleListener{
-		public abstract void onCancle();
+	public interface OnCancleListener{
+		void onCancle();
 	}
 }

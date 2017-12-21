@@ -16,8 +16,10 @@ package com.sleepbot.datetimepicker.time;
  */
 
 import android.app.ActionBar.LayoutParams;
+import android.app.Dialog;
 import android.graphics.Rect;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -167,6 +169,12 @@ public class TimePickerDialog extends DialogFragment implements RadialPickerLayo
 
     public void setCloseOnSingleTapMinute(boolean closeOnSingleTapMinute) {
         mCloseOnSingleTapMinute = closeOnSingleTapMinute;
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        return new Dialog(getActivity(), R.style.dialog_date_pick);
     }
 
     @Override

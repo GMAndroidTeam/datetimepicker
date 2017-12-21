@@ -1,9 +1,10 @@
 buildscript {
     repositories {
-        mavenCentral()
+        google()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.android.tools.build:gradle:3.0.1'
     }
 }
 
@@ -12,8 +13,10 @@ allprojects {
     group = GROUP
 
     repositories {
-        mavenCentral()
+        google()
+        jcenter()
     }
 }
 
 apply plugin: 'android-reporting'
+tasks.findByPath(":datetimepicker-library:androidJavadocs").enabled = false
